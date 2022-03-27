@@ -7,6 +7,8 @@
   Button
 </button>
 
+<button class="btn btn-warning">Warning</button>
+
 <Counter />
 
 <br/>

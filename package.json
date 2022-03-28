@@ -24,7 +24,9 @@
     "run-build-sw-reloadsw": "cross-env DEBUG=vite-plugin-pwa:* BASE_URL=/ SOURCE_MAP=true RELOAD_SW=true vite build",
     "run-build-sw-claims": "cross-env DEBUG=vite-plugin-pwa:* BASE_URL=/ SOURCE_MAP=true CLAIMS=true SW=true vite build",
     "run-build-sw-reloadsw-claims": "cross-env DEBUG=vite-plugin-pwa:* BASE_URL=/ SOURCE_MAP=true CLAIMS=true RELOAD_SW=true SW=true vite build",
-    "serve": "serve dist"
+    "serve": "serve dist",
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
   },
   "devDependencies": {
     "@rollup/plugin-replace": "^3.0.0",
@@ -47,6 +49,7 @@
     "typescript": "^4.5.2",
     "vite": "^2.7.1",
     "vite-plugin-pwa": "workspace:*",
+    "vitest": "^0.7.12",
     "workbox-core": "^6.4.2",
     "workbox-precaching": "^6.4.2",
     "workbox-routing": "^6.4.2"

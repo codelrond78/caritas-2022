@@ -55,6 +55,9 @@ if (reload) {
 }
 
 export default defineConfig({
+  test: {
+    // ...
+  },
   // base: process.env.BASE_URL || 'https://github.com/',
   build: {
     sourcemap: process.env.SOURCE_MAP === 'true',

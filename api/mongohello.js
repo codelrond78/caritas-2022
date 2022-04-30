@@ -1,5 +1,5 @@
-//import clientPromise from './_lib/mongodb-client';
-import { MongoClient } from 'mongodb';
+import clientPromise from 'mongodb-client';
+/*import { MongoClient } from 'mongodb';
 
 const uri = process.env.MONGODB_URI;
 const options = {
@@ -21,7 +21,7 @@ if (process.env.NODE_ENV === "development") {
   client = new MongoClient(uri, options);
   clientPromise = client.connect()
 }
-
+*/
 export default async function handler(req, res) {
     const client = await clientPromise;
     res.status(200).json({ dbName: client.db().databaseName }); 

@@ -73,6 +73,7 @@
     "@sveltestack/svelte-query": "^1.6.0",
     "daisyui": "^2.13.3",
     "felte": "^1.1.5",
+    "mongodb": "^4.5.0",
     "vest": "^4.3.1"
   }
 }

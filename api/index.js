@@ -1,9 +1,9 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import jwt from 'express-jwt';
+import { expressjwt } from 'express-jwt';
 import jwks from 'jwks-rsa';
 
-var jwtCheck = jwt({
+var jwtCheck = expressjwt({
     secret: jwks.expressJwtSecret({
         cache: true,
         rateLimit: true,

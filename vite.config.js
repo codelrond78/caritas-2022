@@ -67,4 +67,9 @@ export default defineConfig({
     VitePWA(pwaOptions),
     replace(replaceOptions),
   ],
+  server: {
+    watch: {
+      usePolling: true
+    }
+  }
 })

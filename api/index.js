@@ -1,25 +1,15 @@
 import express from 'express';
+import mongoose from 'mongoose';
+
 const app = express();
 
-/*
-const { v4 } = require('uuid');
+mongoose.connect(process.env.MONGODB_URI);
+const Cat = mongoose.model('Cat', { name: String });
 
-app.get('/api', (req, res) => {
-  const path = `/api/item/${v4()}`;
-  res.setHeader('Content-Type', 'text/html');
-  res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
-  res.end(`Hello! Go to item: <a href="${path}">${path}</a>`);
-});
-
-app.get('/api/item/:slug', (req, res) => {
-  const { slug } = req.params;
-  res.end(`Item: ${slug}`);
-});
-
-*/
-
-app.get('/api/f', (req, res) => {
-    res.end('f:)');
+app.post('/api/kitty', async (req, res) => {
+    const kitty = new Cat({ name: 'fifi' });
+    await kitty.save();
+    res.end(JSON.stringify(kitty));
 });
 
 app.get('/api/g', (req, res) => {
@@ -27,4 +17,3 @@ app.get('/api/g', (req, res) => {
 });
 
 export default app;
-//module.exports = app;

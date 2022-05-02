@@ -69,6 +69,7 @@
     }
   },
   "dependencies": {
+    "@auth0/auth0-spa-js": "^1.21.0",
     "@felte/validator-vest": "^1.0.4",
     "@sveltestack/svelte-query": "^1.6.0",
     "daisyui": "^2.13.3",

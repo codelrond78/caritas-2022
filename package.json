@@ -74,6 +74,7 @@
     "@felte/validator-vest": "^1.0.4",
     "@sveltestack/svelte-query": "^1.6.0",
     "axios": "^0.27.2",
+    "body-parser": "^1.20.0",
     "daisyui": "^2.13.3",
     "express": "^4.18.1",
     "express-jwt": "^7.5.2",

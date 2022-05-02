@@ -1,0 +1,27 @@
+GET http://localhost:3000/api/ficha/001 HTTP/1.1
+
+###
+
+POST http://localhost:3000/api/ficha HTTP/1.1
+content-type: application/json
+
+{
+    "members": [
+        {
+            "name": "miguel angel"
+        }
+    ]
+}
+
+###
+
+PUT http://localhost:3000/api/ficha/001 HTTP/1.1
+content-type: application/json
+
+{
+    "members": [
+        {
+            "name": "miguelmola ;)"
+        }
+    ]
+}

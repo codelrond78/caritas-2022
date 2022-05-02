@@ -5,11 +5,12 @@
   import ReloadPrompt from './lib/ReloadPrompt.svelte'
   import { useAuth0 } from "./services/auth0"
   import AuthenticationButton from "./lib/buttons/authentication-button.svelte"
-
+  import { makeRequest } from './services/external-api-service'
+  
   let {
     //auth0Client,
     isLoading,
-    //isAuthenticated,
+    isAuthenticated,
     //user,
     //login,
     initializeAuth0,
@@ -27,9 +28,19 @@
     );
   };
 
-  async function handleToken(){
-    const token = await getAccessToken()
-    console.log("***", token)
+  async function handleRequest(){
+      //const token = await getAccessToken()
+      //console.log(token)
+      const config = {
+      url: `/api/g`,
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    };
+
+    const data = await makeRequest({ config, authenticated: true });
+    console.log(data)
   }
 
   onMount(async () => {
@@ -44,7 +55,7 @@
 {/if}
 
 {#if !$isLoading}
-  <button class="btn btn-warning" on:click="{handleToken}">handle tocken</button>
+  <button class="btn btn-warning" on:click="{handleRequest}">handle tocken</button>
   <AuthenticationButton />
   <Router {routes} />
 {/if}

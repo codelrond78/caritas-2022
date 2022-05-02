@@ -17,7 +17,7 @@ export const apiResponse = writable("Click a button to make an API request...");
 
 const { getAccessToken } = useAuth0;
 
-const makeRequest = async (options) => {
+export const makeRequest = async (options) => {
   try {
     if (options.authenticated) {
       const token = await getAccessToken();

@@ -1,5 +1,5 @@
-import auth0 from "@auth0/auth0-spa-js";
-import { get, writable } from "svelte/store";
+import auth0 from "@auth0/auth0-spa-js"
+import { get, writable } from "svelte/store"
 
 const _useAuth0 = () => {
   const auth0Client = writable(null);
@@ -69,6 +69,8 @@ const _useAuth0 = () => {
 
     //await get(auth0Client).loginWithRedirect(options);
     await get(auth0Client).loginWithPopup(options);
+    user.set(await client.getUser());
+    isAuthenticated.set(true);
   };
 
   const logout = async (options) => {

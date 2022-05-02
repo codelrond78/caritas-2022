@@ -5,7 +5,7 @@
 </script>
 
 <button
-  class="button button--primary button--compact"
+  class="btn btn-error"
   on:click={() =>
     logout({
       returnTo: window.location.origin,

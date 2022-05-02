@@ -67,7 +67,8 @@ const _useAuth0 = () => {
       return;
     }
 
-    await get(auth0Client).loginWithRedirect(options);
+    //await get(auth0Client).loginWithRedirect(options);
+    await get(auth0Client).loginWithPopup(options);
   };
 
   const logout = async (options) => {

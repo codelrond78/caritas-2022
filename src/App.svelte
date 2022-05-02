@@ -13,6 +13,7 @@
     //user,
     //login,
     initializeAuth0,
+    getAccessToken,
     //createAuth0Client,
   } = useAuth0;
 
@@ -26,6 +27,11 @@
     );
   };
 
+  async function handleToken(){
+    const token = await getAccessToken()
+    console.log("***", token)
+  }
+
   onMount(async () => {
     await initializeAuth0({ onRedirectCallback });
   });
@@ -38,6 +44,7 @@
 {/if}
 
 {#if !$isLoading}
+  <button class="btn btn-warning" on:click="{handleToken}">handle tocken</button>
   <AuthenticationButton />
   <Router {routes} />
 {/if}

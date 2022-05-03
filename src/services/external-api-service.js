@@ -9,7 +9,7 @@ export const AccessControlLevel = {
   CORS: "requires-cors-allowed-method",
 };
 
-const apiServerUrl = process.env.API_SERVER_URL;
+const apiServerUrl = "" // process.env.API_SERVER_URL;
 
 export const selectedAccessControlLevel = writable("");
 export const apiEndpoint = writable("");

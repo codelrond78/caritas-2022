@@ -37,9 +37,9 @@ const _useAuth0 = () => {
 
   const initializeAuth0 = async (config = {}) => {
     await createAuth0Client({
-      domain: 'dev-qni6mx5z.us.auth0.com', //import.meta.env.AUTH0_DOMAIN,
-      client_id: '39JaK3uwi2frHRhlZpTxQ4dJjofdeElu', //import.meta.env.AUTH0_CLIENT_ID,
-      audience: 'https://caritas2022.devme.fun', //import.meta.env.AUTH0_AUDIENCE,
+      domain: import.meta.env.VITE_AUTH0_DOMAIN,
+      client_id: import.meta.env.VITE_AUTH0_CLIENT_ID,
+      audience: import.meta.env.VITE_AUTH0_AUDIENCE,
       redirect_uri: window.location.origin,
     });
 

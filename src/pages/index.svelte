@@ -1,6 +1,5 @@
 <script lang="ts">
 import { createForm } from 'felte';
-import Alert from '../lib/alert.svelte'
 import {error, success} from '../store'
 
 const { form } = createForm({
@@ -30,7 +29,6 @@ $: {
     <button class="btn btn-active btn-accent">Conectar</button>
 </form>
 -->
-<Alert />
 
 <button class="btn btn-active btn-accent" on:click={() => apiError=true}>Set error!</button>
 <button class="btn btn-active btn-accent" on:click={() => apiSuccess=true}>Set success!</button>

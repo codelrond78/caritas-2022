@@ -3,8 +3,7 @@
   import { Router } from '@roxi/routify'
   import { routes } from '../.routify/routes'
   import ReloadPrompt from './lib/ReloadPrompt.svelte'
-  import { useAuth0 } from "./services/auth0"
-  import AuthenticationButton from "./lib/buttons/authentication-button.svelte"
+  import { useAuth0 } from "./services/auth0"  
   import { makeRequest } from './services/external-api-service'
   
   let {
@@ -55,8 +54,7 @@
 {/if}
 
 {#if !$isLoading}
-  <button class="btn btn-warning" on:click="{handleRequest}">handle tocken</button>
-  <AuthenticationButton />
+  <!--<button class="btn btn-warning" on:click="{handleRequest}">handle tocken</button>-->  
   <Router {routes} />
 {/if}
 

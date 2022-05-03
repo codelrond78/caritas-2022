@@ -10,8 +10,8 @@ const pwaOptions = {
   //css: {postcss,},
   includeAssets: ['favicon.svg'],
   manifest: {
-    name: 'PWA Router',
-    short_name: 'PWA Router',
+    name: 'Acogida Velez Rubio',
+    short_name: 'Acogida Velez Rubio',
     theme_color: '#ffffff',
     icons: [
       {

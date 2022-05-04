@@ -71,7 +71,7 @@ export default defineConfig({
       $lib: path.resolve('./src/lib'),
       $src: path.resolve('./src'),
     }
-  }
+  },
   server: {
     watch: {
       usePolling: true

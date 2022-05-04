@@ -8,7 +8,7 @@
     } = useAuth0;
 </script>
   
-{#if isAuthenticated}
+{#if $isAuthenticated}
     {$goto('/')}
 {:else}
     <img src="/loginimage.jpg" alt="Acceder a la app" width="100" />

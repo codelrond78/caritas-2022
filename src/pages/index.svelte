@@ -22,7 +22,7 @@ $: {
 
 </script>
 
-<a class="link" href="/private/ficha">Ir a ficha</a>
+<a class="link" href="/private/new-ficha">Ir a ficha</a>
 
 <!--
 <button class="btn btn-active btn-accent" on:click={() => apiError=true}>Set error!</button>

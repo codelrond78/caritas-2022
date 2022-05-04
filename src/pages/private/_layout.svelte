@@ -5,9 +5,10 @@
     let {        
         isAuthenticated,
     } = useAuth0;
+
 </script>
   
-{#if isAuthenticated}
+{#if $isAuthenticated}
     <slot />
 {:else}
     {$goto('/login')}

@@ -2,12 +2,11 @@ import { defineConfig } from 'vite'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
 import { VitePWA } from 'vite-plugin-pwa'
 import replace from '@rollup/plugin-replace'
-//import postcss from './postcss.config.js'
+import path from 'path'
 
 const pwaOptions = {
   mode: 'development',
   base: '/',
-  //css: {postcss,},
   includeAssets: ['favicon.svg'],
   manifest: {
     name: 'Acogida Velez Rubio',
@@ -67,6 +66,12 @@ export default defineConfig({
     VitePWA(pwaOptions),
     replace(replaceOptions),
   ],
+  resolve: {
+    alias: {
+      $lib: path.resolve('./src/lib'),
+      $src: path.resolve('./src'),
+    }
+  }
   server: {
     watch: {
       usePolling: true

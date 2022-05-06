@@ -1,7 +1,7 @@
 <script>
     import { createForm } from 'felte';
     import { cleave } from 'svelte-cleavejs';
-    import { makeRequest } from './services/external-api-service';
+    import { makeRequest } from '../services/external-api-service';
 
     export let id;
     export let details;
@@ -9,22 +9,26 @@
     let options = {
 		  date: true,
       datePattern: ['d', 'm', 'Y'],
-		  delimiter: '-'
+		  delimiter: '/'
 	  }
 
     const { form, data, addField, unsetField } = createForm({
       onSubmit: async (values) => {
         const config = {
-          url: `/api/ficha`,
-          method: "post",
+          url: id ? `/api/ficha/${id}`:'/api/ficha',
+          method: id ? "put":"post",
           data: values,
           headers: {
             "content-type": "application/json",
           },
         };
+        try{
+          const response = await makeRequest({ config, authenticated: true });
+          console.log(response)   
+          id = response.id
+        }catch{
 
-        const response = await makeRequest({ config, authenticated: true });
-        console.log(response)   
+        }        
       },
       initialValues: {
         id,

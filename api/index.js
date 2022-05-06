@@ -38,18 +38,26 @@ app.post('/api/ficha', jwtCheck, async (req, res, next) => {
     //const mig = new Ficha(req.body);
     //await mig.save();
     //res.end(JSON.stringify(mig));
+    console.log(req.body);
+    try{
+        res.end({done: true});
+    }catch(err){
+        next(err)
+    }    
+})
+
+app.put('/api/ficha/:id', jwtCheck, async (req, res) => {
+    /*
+    const mig = await Ficha.findByIdAndUpdate(req.params.id, req.body, 'after')
+    await mig.save();
+    res.end(JSON.stringify(mig));
+    */
+    console.log(req.params.id, req.body);
     try{
         res.end({done: true});
     }catch(err){
         next(err)
     }
-    
-})
-
-app.put('/api/ficha/:id', jwtCheck, async (req, res) => {
-    const mig = await Ficha.findByIdAndUpdate(req.params.id, req.body, 'after')
-    await mig.save();
-    res.end(JSON.stringify(mig));
 })
 
 app.get('/api/ficha/:id', jwtCheck, async (req, res) => {

@@ -34,12 +34,14 @@ export const makeRequest = async (options) => {
     const { data } = response;
     success.timeout("Éxito!!!")
     return data;
-  } catch (error) {
+  } catch (err) {
     error.timeout("Hay un error")
-    if (axios.isAxiosError(error) && error.response) {
-      return error.response.data;
+    if (axios.isAxiosError(err) && err.response) {
+      throw err.response.data;
+      //return err.response.data;
     }
-    return error.message;
+    throw err.message;
+    //return err.message;
   }
 };
 

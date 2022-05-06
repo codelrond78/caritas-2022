@@ -2,6 +2,10 @@
     import { createForm } from 'felte';
     import { cleave } from 'svelte-cleavejs';
     import { makeRequest } from '../services/external-api-service';
+    import { useMutation } from '@sveltestack/svelte-query';
+ 
+    let config;
+    const mutation = useMutation( () => makeRequest({ config, authenticated: true }))
 
     export let id;
     export let details;
@@ -13,8 +17,8 @@
 	  }
 
     const { form, data, addField, unsetField } = createForm({
-      onSubmit: async (values) => {
-        const config = {
+      onSubmit: (values) => {
+        config = {
           url: id ? `/api/ficha/${id}`:'/api/ficha',
           method: id ? "put":"post",
           data: values,
@@ -22,13 +26,7 @@
             "content-type": "application/json",
           },
         };
-        try{
-          const response = await makeRequest({ config, authenticated: true });
-          console.log(response)   
-          id = response.id
-        }catch{
-
-        }        
+        $mutation.mutate()
       },
       initialValues: {
         id,
@@ -36,18 +34,15 @@
       },
     });
   
-    let members;
-    $: {
-      //console.log($data)
-      members = $data.members;
-    }
+    $: members = $data.members;
+    $: if($mutation.isSuccess) id = $mutation.data.id
   
     function removeMember(index) {
-      return () => unsetField(`interests.${index}`);
+      return () => unsetField(`members.${index}`);
     }
   
     function addMember(index) {
-      return () => addField(`interests`, { name: '', year: '' }, index);
+      return () => addField(`members`, { name: '', dateOfBirth: '' }, index);
     }
   </script>
   
@@ -57,12 +52,12 @@
       <div>
         <input type="text" placeholder="Nombre" name="members.{index}.name" class="input input-bordered w-full max-w-xs">
         <input use:cleave={options} type="text" placeholder="Fecha de nacimiento" name="members.{index}.dateOfBirth" class="input input-bordered w-full max-w-xs">
-        <button type="button" on:click="{removeMember(index)}">
+        <button class="btn btn-error" type="button" on:click="{removeMember(index)}">
           Borrar miembro
         </button>
       </div>
     {/each}
-    <button type="button" on:click="{addMember(members.length)}">
+    <button class="btn btn-primary" type="button" on:click="{addMember(members.length)}">
         Añadir miembro
     </button>
   </form>

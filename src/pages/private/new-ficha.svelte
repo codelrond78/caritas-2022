@@ -3,4 +3,4 @@
 
 </script>
 
-<Ficha id={null} details={ {members: [{ name: '', dateOfBirth: null }]} } />
+<Ficha id={null} details={ {address: "", members: [{ name: '', dateOfBirth: null }]} } />

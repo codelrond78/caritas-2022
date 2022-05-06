@@ -69,7 +69,9 @@ const _useAuth0 = () => {
 
     //await get(auth0Client).loginWithRedirect(options);
     await get(auth0Client).loginWithPopup(options);
-    //user.set(await auth0.getUser());
+    const currentUser = await get(auth0Client).getUser();
+    console.log('user', user)
+    user.set(currentUser);
     isAuthenticated.set(true);
   };
 

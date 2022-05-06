@@ -20,8 +20,13 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
+app.use(function(err, req, res, next) {
+    console.error(err.stack);
+    res.status(500).send({error: 'Something broke!'});
+});
+  
+
 mongoose.connect(process.env.MONGODB_URI);
-//const Cat = mongoose.model('Cat', { name: String });
 
 const fichaSchema = new mongoose.Schema({
     members: [{name: String}]
@@ -29,10 +34,16 @@ const fichaSchema = new mongoose.Schema({
 
 const Ficha = mongoose.model('Ficha', fichaSchema);
 
-app.post('/api/ficha', jwtCheck, async (req, res) => {
-    const mig = new Ficha(req.body);
-    await mig.save();
-    res.end(JSON.stringify(mig));
+app.post('/api/ficha', jwtCheck, async (req, res, next) => {
+    //const mig = new Ficha(req.body);
+    //await mig.save();
+    //res.end(JSON.stringify(mig));
+    try{
+        res.end({done: true});
+    }catch(err){
+        next(err)
+    }
+    
 })
 
 app.put('/api/ficha/:id', jwtCheck, async (req, res) => {

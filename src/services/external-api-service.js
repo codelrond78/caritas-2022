@@ -1,6 +1,7 @@
 import axios from "axios";
 import { writable } from "svelte/store";
 import { useAuth0 } from "./auth0";
+import {error, success} from '$src/store';
 
 export const AccessControlLevel = {
   PUBLIC: "public",
@@ -31,13 +32,13 @@ export const makeRequest = async (options) => {
     const response = await axios(options.config);
 
     const { data } = response;
-
+    success.timeout("Éxito!!!")
     return data;
   } catch (error) {
+    error.timeout("Hay un error")
     if (axios.isAxiosError(error) && error.response) {
       return error.response.data;
     }
-
     return error.message;
   }
 };

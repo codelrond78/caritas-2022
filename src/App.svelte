@@ -31,15 +31,15 @@
       //const token = await getAccessToken()
       //console.log(token)
       const config = {
-      url: `/api/g`,
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-      },
-    };
+        url: `/api/g`,
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+        },
+      };
 
-    const data = await makeRequest({ config, authenticated: true });
-    console.log(data)
+      const data = await makeRequest({ config, authenticated: true });
+      console.log(data)
   }
 
   onMount(async () => {

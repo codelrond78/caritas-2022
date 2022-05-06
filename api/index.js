@@ -61,8 +61,11 @@ app.put('/api/ficha/:id', jwtCheck, async (req, res) => {
 })
 
 app.get('/api/ficha/:id', jwtCheck, async (req, res) => {
-    const mig = await Ficha.findById(req.params.id)
-    res.end(JSON.stringify(mig));
+    console.log(req.params.id);
+    const response =  {address: "Calle padre Manjón, 15", members: [{ name: 'miguel', dateOfBirth: '15/03/1978' }]};
+    res.end(response);
+    //const mig = await Ficha.findById(req.params.id)
+    //res.end(JSON.stringify(mig));
 })
 
 /*

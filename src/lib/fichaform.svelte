@@ -1,36 +1,48 @@
 <script>
     import { createForm } from 'felte';
+    import { cleave } from 'svelte-cleavejs';
     export let id;
-    export let interests;
+    export let details;
+
+    let options = {
+		date: true,
+        datePattern: ['d', 'm', 'Y'],
+		delimiter: '-'
+	}
   
     const { form, data, addField, unsetField } = createForm({
       initialValues: {
         id,
-        interests//: [{ value: '' }],
+        ...details
       },
     });
   
-    $: interests = $data.interests;
+    let members;
+    $: {
+      //console.log($data)
+      members = $data.members;
+    }
   
-    function removeInterest(index) {
+    function removeMember(index) {
       return () => unsetField(`interests.${index}`);
     }
   
-    function addInterest(index) {
-      return () => addField(`interests`, { value: '' }, index);
+    function addMember(index) {
+      return () => addField(`interests`, { name: '', year: '' }, index);
     }
   </script>
   
   <form use:form>
-    {#each interests as interest, index}
+    {#each members as member, index}
       <div>
-        <input name="interests.{index}.value" />
-        <button type="button" on:click="{addInterest(index + 1)}">
-          Add Interest
-        </button>
-        <button type="button" on:click="{removeInterest(index)}">
-          Remove Interest
+        <input type="text" placeholder="Nombre" name="members.{index}.name" class="input input-bordered w-full max-w-xs">
+        <input use:cleave={options} type="text" placeholder="Fecha de nacimiento" name="members.{index}.dateOfBirth" class="input input-bordered w-full max-w-xs">
+        <button type="button" on:click="{removeMember(index)}">
+          Borrar miembro
         </button>
       </div>
     {/each}
+    <button type="button" on:click="{addMember(members.length)}">
+        Añadir miembro
+    </button>
   </form>

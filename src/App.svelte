@@ -45,6 +45,9 @@
   onMount(async () => {
     await initializeAuth0({ onRedirectCallback });
   });
+
+  console.log(import.meta.env.VITE_API_SERVER_URL + '')
+
 </script>
 
 {#if $isLoading}

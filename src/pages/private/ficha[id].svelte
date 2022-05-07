@@ -15,7 +15,7 @@
 {#if $queryResult.isLoading}
     <span>Loading...</span>
 {:else if $queryResult.isError}
-    <span>Error: {$queryResult.error.message}</span>
+    <span>Error: {JSON.stringify($queryResult.error)}</span>
 {:else}
     <Ficha {id} details={$queryResult.data} />
 {/if}

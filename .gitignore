@@ -5,3 +5,5 @@ dist
 .env
 yarn-error.log
 tmp.txt
+certificate.pem
+schema.graphql

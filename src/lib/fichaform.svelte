@@ -5,7 +5,7 @@
     import { useMutation } from '@sveltestack/svelte-query';
  
     let config;
-    const mutation = useMutation( () => makeRequest({ config, authenticated: true }))
+    const mutation = useMutation( () => makeRequest({ config, authenticated: true }), {onSuccess: (data) => id = data.id})
 
     export let id;
     export let details;
@@ -35,7 +35,6 @@
     });
   
     $: members = $data.members;
-    $: if($mutation.isSuccess) id = $mutation.data.id
   
     function removeMember(index) {
       return () => unsetField(`members.${index}`);

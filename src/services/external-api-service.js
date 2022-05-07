@@ -1,4 +1,5 @@
-import axios from "axios";
+//import axios from "axios";
+import { request, GraphQLClient  } from 'graphql-request'
 import { writable } from "svelte/store";
 import { useAuth0 } from "./auth0";
 import {error, success} from '$src/store';
@@ -10,7 +11,7 @@ export const AccessControlLevel = {
   CORS: "requires-cors-allowed-method",
 };
 
-const apiServerUrl = "" // process.env.API_SERVER_URL;
+const apiServerUrl = import.meta.env.VITE_API_SERVER_URL + '';
 
 export const selectedAccessControlLevel = writable("");
 export const apiEndpoint = writable("");
@@ -18,8 +19,14 @@ export const apiResponse = writable("Click a button to make an API request...");
 
 const { getAccessToken } = useAuth0;
 
-export const makeRequest = async (options) => {
+export const logToken = async () => {
+    const token = await getAccessToken();
+    console.log(token)
+}
+
+export const makeRequest = async (query) => {
   try {
+    /*
     if (options.authenticated) {
       const token = await getAccessToken();
 
@@ -27,21 +34,29 @@ export const makeRequest = async (options) => {
         ...options.config.headers,
         Authorization: `Bearer ${token}`,
       };
-    }
+    }*/
 
-    const response = await axios(options.config);
+    //const response = await axios(options.config);
+    const token = await getAccessToken();
+    console.log(token)
+    const client = new GraphQLClient(apiServerUrl, { headers: {Authorization: `Bearer ${token}`} })
+    const response = await client.request(query)
 
     const { data } = response;
     success.timeout("Éxito!!!")
     return data;
   } catch (err) {
+    console.log(err)
     error.timeout("Hay un error")
+    throw err
+    /*
     if (axios.isAxiosError(err) && err.response) {
       throw err.response.data;
       //return err.response.data;
     }
     throw err.message;
     //return err.message;
+    */
   }
 };
 

@@ -27,7 +27,7 @@
     "serve": "serve dist",
     "test": "vitest",
     "coverage": "vitest run --coverage",
-    "surge": "surge --domain=http://giant-agreement.surge.sh dist/"
+    "surge": "surge --domain=https://giant-agreement.surge.sh dist/"
   },
   "devDependencies": {
     "@rollup/plugin-replace": "^4.0.0",

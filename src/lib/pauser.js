@@ -1,8 +1,14 @@
 import { writable } from 'svelte/store';
 import Kefir from 'kefir';
 import { onDestroy } from 'svelte';
+import { GraphQLClient  } from 'graphql-request'
+import { useAuth0 } from "$src/services/auth0";
 
-export default function({id}){
+const apiServerUrl = import.meta.env.VITE_API_SERVER_URL + '';
+
+const { getAccessToken } = useAuth0;
+
+export default function({id, putQuery, postQuery, extractId, cb}){
 
     const status = writable('initial')
         
@@ -26,20 +32,34 @@ export default function({id}){
         p.emit(true)
         status.set("saving")
         try{
-            await sleep(2000)
+            const token = await getAccessToken();
+            console.log(token)
+            const client = new GraphQLClient(apiServerUrl, { headers: {Authorization: `Bearer ${token}`} })
+            let response;
+            let variables = x.at(-1);
+            if(id){
+              response = await client.request(putQuery, variables)
+            }else{
+              response = await client.request(postQuery, variables)
+            }            
             status.set("done")	
+            const { data } = response;
+            if(!id){
+              id = extractId(data);
+            }
+            return data;            
         } catch(err){
             status.set("error")
+            return {error: ''}
         }finally {
             p.emit(false)
         }
-        return x.at(-1)
     }
 
     let p;
     let e;
     const bar = Kefir.stream(ex => {p = ex; p.emit(false)})
-    let foo = Kefir.stream(ex => e = ex).debounce(500).bufferBy(pausableInterval(bar)).flatMapLatest((x)=>{
+    let foo = Kefir.stream(ex => {e = ex; cb('ready')}).debounce(500).bufferBy(pausableInterval(bar)).flatMapLatest((x)=>{
         if(x.length > 0) return Kefir.fromPromise(handle(x))
         return Kefir.never()
     })
@@ -58,8 +78,12 @@ export default function({id}){
 
     onDestroy(()=>subscription.unsubscribe());
 
+    function emit(x){
+      e.emit(x)
+    }
+
     return {
         status,
-        emit: e.emit
+        emit
     }
 }

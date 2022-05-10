@@ -8,3 +8,5 @@ tmp.txt
 certificate.pem
 schema.graphql
 .env.development
+.env.production
+.back-env

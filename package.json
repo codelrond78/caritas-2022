@@ -89,6 +89,7 @@
     "mongodb": "^4.5.0",
     "mongodb-client": "file:api/utils",
     "mongoose": "^6.3.1",
+    "rxjs": "^7.5.5",
     "svelte-cleavejs": "^1.0.3",
     "vest": "^4.3.1"
   }

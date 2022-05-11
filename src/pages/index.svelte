@@ -2,6 +2,8 @@
 import { createForm } from 'felte';
 import {error, success} from '../store'
 
+import Cat from '../lib/catForm.svelte'
+
 const { form } = createForm({
   onSubmit: (values) => {
     // ...
@@ -25,7 +27,4 @@ $: {
 <a class="link" href="/private/ficha">Ir a ficha</a>
 <a class="link" href="/private/ficha/001">Ir a ficha 001</a>
 
-<!--
-<button class="btn btn-active btn-accent" on:click={() => apiError=true}>Set error!</button>
-<button class="btn btn-active btn-accent" on:click={() => apiSuccess=true}>Set success!</button>
--->
+<Cat />

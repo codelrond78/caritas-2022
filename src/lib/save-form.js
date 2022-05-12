@@ -3,6 +3,7 @@ import { buffer, switchMap, from, interval, NEVER, Subject, debounceTime } from 
 import { onDestroy } from 'svelte';
 import { GraphQLClient, gql  } from 'graphql-request'
 import { useAuth0 } from "$src/services/auth0";
+import {error, success} from '$src/store';
 
 const postQuery = gql`
 mutation MyMutation($input: [AddCatInput!]!) {
@@ -56,14 +57,8 @@ export default function({id, setId}){
     )}
     
     async function handle(x){
-        console.log('init handle(x)', x)
-        pauser.next(true)
-        status.set("saving")
-        console.log('done')
-        pauser.next(false)
-        status.set("done")
-        return
         try{
+            status.set("saving")	
             const token = await getAccessToken();
             console.log(token)
             //const client = new GraphQLClient(apiServerUrl, { headers: {Authorization: `Bearer ${token}`} })
@@ -86,14 +81,18 @@ export default function({id, setId}){
               }
               response = await client.request(postQuery, variables)
             }            
-            status.set("done")	
+            status.set("saved")	
+            console.log('%c done! ', 'background: #222; color: #bada55');
+            success.timeout("Éxito!!!")
             const { data } = response;
             if(!id){
               id = setId(data);
             }
             return data;            
         } catch(err){
+            console.log('%c error! ', 'background: #222; color: #e62558');
             status.set("error")
+            error.timeout("Hay un error")
             return {error: ''}
         }finally {
             pauser.next(false)

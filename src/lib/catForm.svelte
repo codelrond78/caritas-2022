@@ -3,7 +3,7 @@ import streamFn from './save-form'
 
 const {stream, status} = streamFn({id: "0x1a483f4330", setId: (data) => data.addCat.cat[0].catID})
 
-let item = {name: 'fuffy', age: '7'};
+let item = {name: 'fuffy', age: 7};
 
 let colors = {
     initial: 'gray',

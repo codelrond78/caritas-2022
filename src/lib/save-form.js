@@ -59,8 +59,8 @@ export default function({id, setId}){
     async function handle(x){
         try{
             status.set("saving")	
-            const token = await getAccessToken();
-            console.log(token)
+            //const token = await getAccessToken();
+            //console.log(token)
             //const client = new GraphQLClient(apiServerUrl, { headers: {Authorization: `Bearer ${token}`} })
             const client = new GraphQLClient(apiServerUrl)
             let response;
@@ -91,6 +91,7 @@ export default function({id, setId}){
             return data;            
         } catch(err){
             console.log('%c error! ', 'background: #222; color: #e62558');
+            console.log(err)
             status.set("error")
             error.timeout("Hay un error")
             return {error: ''}

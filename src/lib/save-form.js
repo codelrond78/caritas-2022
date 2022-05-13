@@ -2,27 +2,30 @@ import { writable } from 'svelte/store';
 import { buffer, switchMap, from, interval, NEVER, Subject, debounceTime, skip } from 'rxjs';
 import { onDestroy } from 'svelte';
 import { GraphQLClient } from 'graphql-request'
-import { useAuth0 } from "$src/services/auth0";
 import {error, success} from '$src/store';
 
 const T = 2000;
 
-const apiServerUrl = import.meta.env.VITE_API_SERVER_URL + "";
+export function Client({apiServerUrl, token}){
+  return async function(){
+    if(token){
+      const t = await token();
+      return new GraphQLClient(apiServerUrl, { headers: {Authorization: `Bearer ${t}`} })
+    }else{
+      return new GraphQLClient(apiServerUrl)
+    }
+  }
+}
 
-const { getAccessToken } = useAuth0;
-
-export default function({id, setId, putQuery, postQuery}){
+export default function({id, setId, putQuery, postQuery, client}){
 
     const status = writable('initial')
         
     function pausableInterval(pauser) {    
         return pauser.pipe(switchMap((paused) => {
-          console.log('valor de paused en pausable es', paused)
           if(paused){
-            console.log('paused')
             return NEVER
           }else{
-            console.log('not paused')
             return interval(T)
           }
         }
@@ -32,10 +35,7 @@ export default function({id, setId, putQuery, postQuery}){
     async function handle(x){
         try{
             status.set("saving")	
-            //const token = await getAccessToken();
-            //console.log(token)
-            //const client = new GraphQLClient(apiServerUrl, { headers: {Authorization: `Bearer ${token}`} })
-            const client = new GraphQLClient(apiServerUrl)
+            const c = client()
             let response;
             let values = x.at(-1);
             if(id){
@@ -45,19 +45,18 @@ export default function({id, setId, putQuery, postQuery}){
                   "set": values
                 }
               } 
-              response = await client.request(putQuery, variables)
+              response = await c.request(putQuery, variables)
             }else{
               const variables = {
                 "input": [
                   values
                 ]
               }
-              response = await client.request(postQuery, variables)
+              response = await c.request(postQuery, variables)
             }            
             status.set("saved")	
-            console.log('%c done! ', 'background: #222; color: #bada55');
+            //console.log('%c done! ', 'background: #222; color: #bada55');
             success.timeout("Éxito!!!")
-            //const { data } = response;
             if(!id){
               console.log('my response', response)
               id = setId(response);
@@ -87,7 +86,7 @@ export default function({id, setId, putQuery, postQuery}){
         return NEVER  
       })
     ).subscribe({
-      next: (v) => console.log(`observer: ${JSON.stringify(v)}`),
+      next: (v) => {}, //console.log(`observer: ${JSON.stringify(v)}`),
       complete: (v) => console.log('complete'),
       error: (err) => console.log(err)
     });	

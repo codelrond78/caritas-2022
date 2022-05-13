@@ -1,6 +1,27 @@
 <script>
-import streamFn from './save-form'
+import streamFn, {Client} from './save-form'
 import { gql } from 'graphql-request'
+import { create, test, enforce } from 'vest';
+import { useAuth0 } from "$src/services/auth0";
+
+const { getAccessToken } = useAuth0;
+
+const suite = create((data = {}) => {
+  test('name', 'Username is required', () => {
+    enforce(data.name).isNotBlank();
+  });
+
+  test('age', 'Age is required', () => {
+    enforce(data.name).isNotBlank();
+  });
+
+  test('age', 'Age is a number', () => {
+    enforce(data.name).isNumeric();
+  });
+
+});
+
+const apiServerUrl = import.meta.env.VITE_API_SERVER_URL + "";
 
 const postQuery = gql`
 mutation MyMutation($input: [AddCatInput!]!) {
@@ -27,35 +48,28 @@ mutation MyMutation2($input: UpdateCatInput!) {
 }
 `
 //id: "0x1a483f4330", 
-const { saveImmediately, save, status} = streamFn({id: null, putQuery, postQuery, setId: (data) => data.addCat.cat[0].catID})
+const client = Client({apiServerUrl, token: null})
+const { saveImmediately, save, status} = streamFn({client, id: null, putQuery, postQuery, setId: (data) => data.addCat.cat[0].catID})
 
 let item = {name: null, age: null};
 
-let colors = {
-    initial: 'gray',
-    saving: 'amber',
-    error: 'red',
-    done: 'blue'
-}
-
 function isValid(item){
-    return item.age !== null && item.name !== null
+    console.log(suite(item))
+    return suite(item).isValid()
 }
 
 $: if(isValid(item)) save(item)
-$: color = colors[$status]
 
 </script>
   
 <form>
-    <div class={`border-solid border-2 border-${color}-600`}>
+    <div>
         <input type="text" bind:value={item.name} class="input input-bordered w-full max-w-xs" />
         <input type="number" bind:value={item.age} class="input input-bordered w-full max-w-xs" />  
     </div>
 </form>
 
 {$status}
-{color}
 
 {#if $status === 'error' && isValid(item)}
     <button on:click={()=>saveImmediately(item)} class="btn btn-active btn-accent">Guardar inmediatamente</button>

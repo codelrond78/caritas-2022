@@ -1,5 +1,6 @@
 <script>
 import streamFn from './save-form'
+import { gql } from 'graphql-request'
 
 const postQuery = gql`
 mutation MyMutation($input: [AddCatInput!]!) {

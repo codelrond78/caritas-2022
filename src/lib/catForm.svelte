@@ -57,6 +57,6 @@ $: color = colors[$status]
 {$status}
 {color}
 
-{#if $status === 'error'}
+{#if $status === 'error' && isValid(item)}
     <button on:click={()=>saveImmediately(item)} class="btn btn-active btn-accent">Guardar inmediatamente</button>
 {/if}

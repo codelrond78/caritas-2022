@@ -57,11 +57,12 @@ export default function({id, setId, putQuery, postQuery}){
             status.set("saved")	
             console.log('%c done! ', 'background: #222; color: #bada55');
             success.timeout("Éxito!!!")
-            const { data } = response;
+            //const { data } = response;
             if(!id){
-              id = setId(data);
+              console.log('my response', response)
+              id = setId(response);
             }
-            return data;            
+            return response;            
         } catch(err){
             console.log('%c error! ', 'background: #222; color: #e62558');
             console.log(err)

@@ -4,3 +4,11 @@ dist
 .vercel
 .env
 yarn-error.log
+tmp.txt
+certificate.pem
+schema.graphql
+.env.development
+.env.production
+.back-env
+tmp
+schema.gql

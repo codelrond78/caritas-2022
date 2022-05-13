@@ -1,13 +1,17 @@
 <script lang="ts">
+    import Alert from '../lib/alert.svelte'
+    import AuthenticationButton from "../lib/buttons/authentication-button.svelte"
     // replaced dyanmicaly
     const date = '__DATE__'
 </script>
 
 <main>
-  <img src="/favicon.svg" alt="PWA Logo" width="60" height="60"/>
-  <h1>Svelte PWA!</h1>
-
-  <div class="built">Built at: { date }</div>
+  <!--<img src="/favicon.svg" alt="PWA Logo" width="60" height="60"/>-->
+  <Alert />
+  <img class="float-left" src="/pwa-192x192.png" alt="Acogida Vélez Rubio" width="60" height="60"/>
+  <a class="text-sm float-left" href='https://www.freepik.es/vectores/libre-derechos'>pikisuperstar - www.freepik.es</a>
+  <span class="float-right"><AuthenticationButton /></span>  
+  <h1>Acogida Vélez Rubio!</h1>
 
   <slot />
 

@@ -1,7 +1,7 @@
 <script>
 import streamFn from './save-form'
 
-const {stream, status} = streamFn({id: "0x1a483f4330", setId: (data) => data.addCat.cat[0].catID})
+const { saveImmediately, save, status} = streamFn({id: "0x1a483f4330", setId: (data) => data.addCat.cat[0].catID})
 
 let item = {name: 'fuffy', age: 7};
 
@@ -11,7 +11,7 @@ let colors = {
     error: 'rose',
     done: 'indigo'
 }
-$: stream.next(item)
+$: save(item)
 $: color = colors[$status]
 
 </script>
@@ -23,5 +23,10 @@ $: color = colors[$status]
     </div>
 </form>
 {$status}
+
+{#if $status === 'error'}
+    <button on:click={()=>saveImmediately(item)} class="btn btn-active btn-accent">Guardar inmediatamente</button>
+{/if}
+
 <!--<button class="btn btn-active btn-accent" on:click={()=>pauser.next(false)}>pauser false</button>
 -->

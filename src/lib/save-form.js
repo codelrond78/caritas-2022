@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import { buffer, switchMap, from, interval, NEVER, Subject, debounceTime } from 'rxjs';
+import { buffer, switchMap, from, interval, NEVER, Subject, debounceTime, skip } from 'rxjs';
 import { onDestroy } from 'svelte';
 import { GraphQLClient, gql  } from 'graphql-request'
 import { useAuth0 } from "$src/services/auth0";
@@ -68,7 +68,8 @@ export default function({id, setId}){
             if(id){
               const variables = {
                 "input": {
-                  "filter": {"catID": "0x1a483f4330"},
+                  //"filter": {"catID": "0x1a483f4330"},
+                  "filter": {"catID": id},
                   "set": values
                 }
               } 
@@ -104,6 +105,7 @@ export default function({id, setId}){
     const stream = new Subject()
     
     const subscription = stream.pipe(
+      skip(1),
       debounceTime(500),
       buffer(pausableInterval(pauser)),
       switchMap((x) => {
@@ -130,7 +132,7 @@ export default function({id, setId}){
 
     return {
         status,
-        pauser,
-        stream
+        save: (item) => stream.next(item),
+        saveImmediately: (x) => handle([x])
     }
 }

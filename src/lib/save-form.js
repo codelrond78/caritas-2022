@@ -1,37 +1,11 @@
 import { writable } from 'svelte/store';
 import { buffer, switchMap, from, interval, NEVER, Subject, debounceTime, skip } from 'rxjs';
 import { onDestroy } from 'svelte';
-import { GraphQLClient, gql  } from 'graphql-request'
+import { GraphQLClient } from 'graphql-request'
 import { useAuth0 } from "$src/services/auth0";
 import {error, success} from '$src/store';
 
 const T = 2000;
-
-/*
-const postQuery = gql`
-mutation MyMutation($input: [AddCatInput!]!) {
-  addCat(input: $input) {
-    numUids
-    cat {
-      catID
-      name
-      age
-    }
-  }
-}
-`
-
-const putQuery = gql`
-mutation MyMutation2($input: UpdateCatInput!) {
-  updateCat(input: $input) {
-    cat {
-      age
-      catID
-      name
-    }
-  }
-}
-`*/
 
 const apiServerUrl = import.meta.env.VITE_API_SERVER_URL + "";
 
@@ -41,9 +15,7 @@ export default function({id, setId, putQuery, postQuery}){
 
     const status = writable('initial')
         
-    function pausableInterval(pauser) {
-        //return pauser.pipe(switchMap(x=>interval(500)), tap(x=>console.log(x)))
-     
+    function pausableInterval(pauser) {    
         return pauser.pipe(switchMap((paused) => {
           console.log('valor de paused en pausable es', paused)
           if(paused){
@@ -69,7 +41,6 @@ export default function({id, setId, putQuery, postQuery}){
             if(id){
               const variables = {
                 "input": {
-                  //"filter": {"catID": "0x1a483f4330"},
                   "filter": {"catID": id},
                   "set": values
                 }
@@ -96,7 +67,7 @@ export default function({id, setId, putQuery, postQuery}){
             console.log(err)
             status.set("error")
             error.timeout("Hay un error")
-            return {error: ''}
+            return {error: err}
         }finally {
             pauser.next(false)
         }
@@ -121,14 +92,6 @@ export default function({id, setId, putQuery, postQuery}){
     });	
 
     onDestroy(() => subscription.unsubscribe());
-  /*  
-    const subscription2 = pauser.subscribe({
-      next: (v) => console.log(`pauser: ${JSON.stringify(v)}`),
-      complete: (v) => console.log('complete'),
-      error: (err) => console.log(err)
-    });	
-*/
-    //onDestroy(() => subscription2.unsubscribe());
     pauser.next(false)
 
     return {

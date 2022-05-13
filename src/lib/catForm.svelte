@@ -26,8 +26,8 @@ mutation MyMutation2($input: UpdateCatInput!) {
   }
 }
 `
-
-const { saveImmediately, save, status} = streamFn({id: "0x1a483f4330", putQuery, postQuery, setId: (data) => data.addCat.cat[0].catID})
+//id: "0x1a483f4330", 
+const { saveImmediately, save, status} = streamFn({id: null, putQuery, postQuery, setId: (data) => data.addCat.cat[0].catID})
 
 let item = {name: 'fuffy', age: 7};
 

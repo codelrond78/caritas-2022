@@ -1,15 +1,40 @@
 <script>
 import streamFn from './save-form'
 
-const { saveImmediately, save, status} = streamFn({id: "0x1a483f4330", setId: (data) => data.addCat.cat[0].catID})
+const postQuery = gql`
+mutation MyMutation($input: [AddCatInput!]!) {
+  addCat(input: $input) {
+    numUids
+    cat {
+      catID
+      name
+      age
+    }
+  }
+}
+`
+
+const putQuery = gql`
+mutation MyMutation2($input: UpdateCatInput!) {
+  updateCat(input: $input) {
+    cat {
+      age
+      catID
+      name
+    }
+  }
+}
+`
+
+const { saveImmediately, save, status} = streamFn({id: "0x1a483f4330", putQuery, postQuery, setId: (data) => data.addCat.cat[0].catID})
 
 let item = {name: 'fuffy', age: 7};
 
 let colors = {
     initial: 'gray',
-    saving: 'orange',
-    error: 'rose',
-    done: 'indigo'
+    saving: 'amber',
+    error: 'red',
+    done: 'blue'
 }
 $: save(item)
 $: color = colors[$status]
@@ -22,7 +47,9 @@ $: color = colors[$status]
         <input type="number" bind:value={item.age} class="input input-bordered w-full max-w-xs" />  
     </div>
 </form>
+
 {$status}
+{color}
 
 {#if $status === 'error'}
     <button on:click={()=>saveImmediately(item)} class="btn btn-active btn-accent">Guardar inmediatamente</button>

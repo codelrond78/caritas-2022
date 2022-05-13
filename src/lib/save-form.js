@@ -5,6 +5,9 @@ import { GraphQLClient, gql  } from 'graphql-request'
 import { useAuth0 } from "$src/services/auth0";
 import {error, success} from '$src/store';
 
+const T = 2000;
+
+/*
 const postQuery = gql`
 mutation MyMutation($input: [AddCatInput!]!) {
   addCat(input: $input) {
@@ -28,19 +31,17 @@ mutation MyMutation2($input: UpdateCatInput!) {
     }
   }
 }
-`
+`*/
 
 const apiServerUrl = import.meta.env.VITE_API_SERVER_URL + "";
 
 const { getAccessToken } = useAuth0;
 
-export default function({id, setId}){
+export default function({id, setId, putQuery, postQuery}){
 
     const status = writable('initial')
         
     function pausableInterval(pauser) {
-        const source = interval(500);
-
         //return pauser.pipe(switchMap(x=>interval(500)), tap(x=>console.log(x)))
      
         return pauser.pipe(switchMap((paused) => {
@@ -50,7 +51,7 @@ export default function({id, setId}){
             return NEVER
           }else{
             console.log('not paused')
-            return interval(500)
+            return interval(T)
           }
         }
       )
@@ -106,7 +107,7 @@ export default function({id, setId}){
     
     const subscription = stream.pipe(
       skip(1),
-      debounceTime(500),
+      debounceTime(T),
       buffer(pausableInterval(pauser)),
       switchMap((x) => {
         if(x.length > 0) return from(handle(x))
@@ -120,14 +121,14 @@ export default function({id, setId}){
     });	
 
     onDestroy(() => subscription.unsubscribe());
-    
+  /*  
     const subscription2 = pauser.subscribe({
       next: (v) => console.log(`pauser: ${JSON.stringify(v)}`),
       complete: (v) => console.log('complete'),
       error: (err) => console.log(err)
     });	
-
-    onDestroy(() => subscription2.unsubscribe());
+*/
+    //onDestroy(() => subscription2.unsubscribe());
     pauser.next(false)
 
     return {

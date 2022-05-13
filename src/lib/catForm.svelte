@@ -29,7 +29,7 @@ mutation MyMutation2($input: UpdateCatInput!) {
 //id: "0x1a483f4330", 
 const { saveImmediately, save, status} = streamFn({id: null, putQuery, postQuery, setId: (data) => data.addCat.cat[0].catID})
 
-let item = {name: 'fuffy', age: 7};
+let item = {name: null, age: null};
 
 let colors = {
     initial: 'gray',
@@ -37,7 +37,12 @@ let colors = {
     error: 'red',
     done: 'blue'
 }
-$: save(item)
+
+function isValid(item){
+    return item.age !== null && item.name !== null
+}
+
+$: if(isValid(item)) save(item)
 $: color = colors[$status]
 
 </script>
@@ -55,6 +60,3 @@ $: color = colors[$status]
 {#if $status === 'error'}
     <button on:click={()=>saveImmediately(item)} class="btn btn-active btn-accent">Guardar inmediatamente</button>
 {/if}
-
-<!--<button class="btn btn-active btn-accent" on:click={()=>pauser.next(false)}>pauser false</button>
--->
